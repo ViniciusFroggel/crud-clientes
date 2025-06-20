@@ -79,7 +79,7 @@ Desenvolvido com foco em:
 ### 2️⃣ Clone o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/crud_clientes_hardness.git
+(https://github.com/ViniciusFroggel/crud-clientes.git)
 ```
 
 ---
