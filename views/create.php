@@ -1,37 +1,32 @@
 <?php
 include '../includes/conexao.php';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = trim($_POST['nome']);
+    $nome     = trim($_POST['nome']);
     $telefone = trim($_POST['telefone']);
     $endereco = trim($_POST['endereco']);
 
-    // Validação do telefone (formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX)
+    // Validação de formato de telefone
     $regexTelefone = '/^\(\d{2}\) \d{4,5}-\d{4}$/';
     if (!preg_match($regexTelefone, $telefone)) {
         echo "<script>alert('Formato de telefone inválido. Use (XX) XXXXX-XXXX'); window.history.back();</script>";
         exit;
     }
 
-    if ($nome != "" && $telefone != "" && $endereco != "") {
-        // Prepared statement para segurança contra SQL Injection
+    if ($nome && $telefone && $endereco) {
         $stmt = $conn->prepare("INSERT INTO clientes (nome, telefone, endereco) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $nome, $telefone, $endereco);
-
         if ($stmt->execute()) {
-            header("Location: ../views/index.php");
+            header("Location: index.php");
             exit;
         } else {
             echo "Erro ao cadastrar: " . $stmt->error;
         }
-
         $stmt->close();
     } else {
         echo "<script>alert('Preencha todos os campos!');</script>";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -40,6 +35,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sistema de Clientes</div>
+        <nav>
+            <a href="index.php">Home</a>
+            <a href="create.php">Cadastrar</a>
+        </nav>
+    </header>
+
     <div class="container">
         <h1>Cadastrar Cliente</h1>
 
@@ -55,10 +59,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="botoes-form">
                 <button type="submit" class="botao-salvar">Cadastrar</button>
-                <a href="../views/index.php" class="botao-voltar">Voltar</a>
+                <a href="index.php" class="botao-voltar">Voltar</a>
             </div>
         </form>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 - Sistema de Clientes | Todos os direitos reservados</p>
+    </footer>
 
     <script src="../assets/js/script.js"></script>
 </body>

@@ -1,34 +1,43 @@
 <?php
 include '../includes/conexao.php';
+$id = intval($_GET['id']);
 
-$id = $_GET['id'];
-
-// Consulta o cliente pelo ID
-$sql = "SELECT * FROM clientes WHERE id = $id";
-$result = $conn->query($sql);
+// Busca o cliente
+$stmt = $conn->prepare("SELECT * FROM clientes WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
 $cliente = $result->fetch_assoc();
+$stmt->close();
 
-// Atualiza os dados se o formulário for enviado
+// Atualização
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = trim($_POST['nome']);
+    $nome     = trim($_POST['nome']);
     $telefone = trim($_POST['telefone']);
     $endereco = trim($_POST['endereco']);
 
-    if ($nome != "" && $telefone != "" && $endereco != "") {
-        $sql = "UPDATE clientes SET nome='$nome', telefone='$telefone', endereco='$endereco' WHERE id=$id";
+    // Validação de formato de telefone
+    $regexTelefone = '/^\(\d{2}\) \d{4,5}-\d{4}$/';
+    if (!preg_match($regexTelefone, $telefone)) {
+        echo "<script>alert('Formato de telefone inválido. Use (XX) XXXXX-XXXX'); window.history.back();</script>";
+        exit;
+    }
 
-        if ($conn->query($sql) === TRUE) {
+    if ($nome && $telefone && $endereco) {
+        $stmt = $conn->prepare("UPDATE clientes SET nome=?, telefone=?, endereco=? WHERE id=?");
+        $stmt->bind_param("sssi", $nome, $telefone, $endereco, $id);
+        if ($stmt->execute()) {
             header("Location: index.php");
             exit;
         } else {
-            echo "Erro: " . $conn->error;
+            echo "Erro ao atualizar: " . $stmt->error;
         }
+        $stmt->close();
     } else {
         echo "<script>alert('Preencha todos os campos!');</script>";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -37,10 +46,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sistema de Clientes</div>
+        <nav>
+            <a href="index.php">Home</a>
+            <a href="create.php">Cadastrar</a>
+        </nav>
+    </header>
+
     <div class="container">
         <h1>Editar Cliente</h1>
 
-        <form method="post">
+        <form method="POST">
             <label for="nome">Nome:</label>
             <input type="text" name="nome" id="nome" value="<?= htmlspecialchars($cliente['nome']) ?>" required>
 
@@ -57,7 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <!-- JS Externo -->
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 - Sistema de Clientes | Todos os direitos reservados</p>
+    </footer>
+
     <script src="../assets/js/script.js"></script>
 </body>
 </html>
