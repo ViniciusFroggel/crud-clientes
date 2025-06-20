@@ -160,7 +160,7 @@ http://localhost/crud_clientes_hardness/views/index.php
 
 ## 🔍 Prints do Projeto
 
-![image](https://github.com/user-attachments/assets/622b4554-eac2-455a-ba39-67a3ab311520)
+![image](https://github.com/user-attachments/assets/ff5b7b36-0d80-4216-a74b-07f3398a2a3a)
 
 
 ---
