@@ -1,39 +1,24 @@
 <?php
 include '../includes/conexao.php';
 
-$id = $_GET['id'] ?? '';
-
-if (empty($id)) {
-    header("Location: index.php");
-    exit;
-}
+$id = $_GET['id'];
 
 $sql = "SELECT * FROM clientes WHERE id = $id";
 $result = $conn->query($sql);
-
-if ($result->num_rows != 1) {
-    header("Location: index.php");
-    exit;
-}
-
 $cliente = $result->fetch_assoc();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = trim($_POST['nome']);
-    $telefone = trim($_POST['telefone']);
-    $endereco = trim($_POST['endereco']);
+    $nome = $_POST['nome'];
+    $telefone = $_POST['telefone'];
+    $endereco = $_POST['endereco'];
 
-    if ($nome != "" && $telefone != "" && $endereco != "") {
-        $sql = "UPDATE clientes SET nome='$nome', telefone='$telefone', endereco='$endereco' WHERE id = $id";
+    $sql = "UPDATE clientes SET nome='$nome', telefone='$telefone', endereco='$endereco' WHERE id=$id";
 
-        if ($conn->query($sql) === TRUE) {
-            header("Location: index.php");
-            exit;
-        } else {
-            echo "Erro ao editar: " . $conn->error;
-        }
+    if ($conn->query($sql) === TRUE) {
+        header("Location: index.php");
+        exit;
     } else {
-        echo "<script>alert('Preencha todos os campos!');</script>";
+        echo "Erro: " . $conn->error;
     }
 }
 ?>
@@ -48,21 +33,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>Editar Cliente</h1>
-        <form name="formCliente" method="POST" onsubmit="return validarFormulario();">
-            <label>Nome:</label>
-            <input type="text" name="nome" value="<?= htmlspecialchars($cliente['nome']) ?>" required>
 
-            <label>Telefone:</label>
-            <input type="text" name="telefone" value="<?= htmlspecialchars($cliente['telefone']) ?>" required>
+        <form method="post">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" value="<?= htmlspecialchars($cliente['nome']) ?>" required>
 
-            <label>Endereço:</label>
-            <input type="text" name="endereco" value="<?= htmlspecialchars($cliente['endereco']) ?>" required>
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" id="telefone" value="<?= htmlspecialchars($cliente['telefone']) ?>" required>
 
-            <input type="submit" value="Salvar">
-            <a href="index.php" class="botao-voltar">Voltar</a>
+            <label for="endereco">Endereço:</label>
+            <input type="text" name="endereco" id="endereco" value="<?= htmlspecialchars($cliente['endereco']) ?>" required>
+
+            <div class="botoes-form">
+                <button type="submit" class="botao">Salvar</button>
+                <a href="index.php" class="botao">Voltar</a>
+            </div>
         </form>
     </div>
-
-    <script src="../assets/js/script.js"></script>
 </body>
 </html>

@@ -1,53 +1,121 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const telefone = document.querySelector('input[name="telefone"]');
+// =========================
+// Slide da Lista de Clientes
+// =========================
 
-    if (telefone) {
-        telefone.addEventListener('input', function() {
-            let valor = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+function toggleLista() {
+    const lista = document.getElementById('lista-clientes');
 
-            // Limitar a quantidade máxima (2 DDD + 9 números)
-            if (valor.length > 11) valor = valor.slice(0, 11);
+    if (lista.style.display === 'block' || lista.style.maxHeight) {
+        slideUp(lista);
+    } else {
+        slideDown(lista);
+    }
+}
 
-            // Formatação
-            if (valor.length <= 2) {
-                valor = `(${valor}`;
-            } else if (valor.length <= 6) {
-                valor = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
-            } else if (valor.length <= 10) {
-                valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 6)}-${valor.slice(6)}`;
+function slideDown(element) {
+    element.style.display = 'block';
+    element.style.maxHeight = '0px';
+    element.style.overflow = 'hidden';
+
+    const height = element.scrollHeight;
+    element.style.transition = 'max-height 0.5s ease-out';
+
+    requestAnimationFrame(() => {
+        element.style.maxHeight = height + 'px';
+    });
+
+    element.addEventListener('transitionend', function handler() {
+        element.style.maxHeight = '';
+        element.style.overflow = '';
+        element.removeEventListener('transitionend', handler);
+    });
+}
+
+function slideUp(element) {
+    element.style.overflow = 'hidden';
+    element.style.maxHeight = element.scrollHeight + 'px';
+
+    requestAnimationFrame(() => {
+        element.style.transition = 'max-height 0.5s ease-out';
+        element.style.maxHeight = '0';
+    });
+
+    element.addEventListener('transitionend', function handler() {
+        element.style.display = 'none';
+        element.style.maxHeight = '';
+        element.style.overflow = '';
+        element.removeEventListener('transitionend', handler);
+    });
+}
+
+// =========================
+// Confirmação de Exclusão
+// =========================
+
+function confirmarExclusao() {
+    return confirm("Tem certeza que deseja excluir este cliente?");
+}
+
+// =========================
+// Validação e Máscara de Telefone
+// =========================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const telefoneInput = document.getElementById('telefone');
+
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', () => {
+            const valorAntigo = telefoneInput.value;
+            const apenasNumeros = valorAntigo.replace(/\D/g, '');
+
+            if (valorAntigo !== apenasNumeros && valorAntigo !== '') {
+                exibirErroTelefone('Somente números são permitidos no telefone!');
             } else {
-                valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
+                removerErroTelefone();
             }
 
-            this.value = valor;
+            aplicarMascaraTelefone(telefoneInput);
         });
     }
 });
 
-// Validação dos campos antes de enviar o formulário
-function validarFormulario() {
-    const nome = document.forms["formCliente"]["nome"].value.trim();
-    const telefone = document.forms["formCliente"]["telefone"].value.trim();
-    const endereco = document.forms["formCliente"]["endereco"].value.trim();
+function aplicarMascaraTelefone(input) {
+    let valor = input.value.replace(/\D/g, '');
 
-    if (nome === "" || telefone === "" || endereco === "") {
-        alert("Por favor, preencha todos os campos antes de enviar.");
-        return false;
+    if (valor.length > 11) {
+        valor = valor.substring(0, 11);
     }
 
-    // Remove caracteres não numéricos
-    const telefoneNumeros = telefone.replace(/\D/g, '');
-
-    // Checa se tem um telefone válido (10 ou 11 dígitos)
-    if (telefoneNumeros.length < 10 || telefoneNumeros.length > 11) {
-        alert("Digite um número de telefone válido com DDD.");
-        return false;
+    if (valor.length <= 10) {
+        valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else {
+        valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
     }
 
-    return true;
+    input.value = valor.trim();
 }
 
-// Confirmação de exclusão
-function confirmarExclusao() {
-    return confirm("Você tem certeza que deseja excluir este cliente?");
+// =========================
+// Mensagem de Erro Telefone
+// =========================
+
+function exibirErroTelefone(mensagem) {
+    let erro = document.getElementById('erro-telefone');
+    if (!erro) {
+        erro = document.createElement('div');
+        erro.id = 'erro-telefone';
+        erro.style.color = 'red';
+        erro.style.fontSize = '13px';
+        erro.style.marginTop = '4px';
+        const telefoneInput = document.getElementById('telefone');
+        telefoneInput.parentNode.appendChild(erro);
+    }
+    erro.textContent = mensagem;
+}
+
+function removerErroTelefone() {
+    const erro = document.getElementById('erro-telefone');
+    if (erro) {
+        erro.remove();
+    }
 }

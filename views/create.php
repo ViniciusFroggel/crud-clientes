@@ -31,18 +31,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>Cadastrar Cliente</h1>
-        <form name="formCliente" method="POST" onsubmit="return validarFormulario();">
-            <label>Nome:</label>
-            <input type="text" name="nome" placeholder="Digite o nome" required>
 
-            <label>Telefone:</label>
-            <input type="text" name="telefone" placeholder="(XX) 9XXXX-XXXX" required>
+        <form method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
 
-            <label>Endereço:</label>
-            <input type="text" name="endereco" placeholder="Digite o endereço" required>
+            <label for="telefone">Telefone:</label>
+            <input type="text" id="telefone" name="telefone" placeholder="(XX) 9XXXX-XXXX" required>
 
-            <input type="submit" value="Cadastrar">
-            <a href="index.php" class="botao-voltar">Voltar</a>
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="endereco" placeholder="Digite o endereço" required>
+
+              <div class="botoes-form">
+                <button type="submit" class="botao">Salvar</button>
+                <a href="index.php" class="botao">Voltar</a>
+            </div>
         </form>
     </div>
 
