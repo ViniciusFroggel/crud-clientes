@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS crud_clientes;
+USE crud_clientes;
+
+CREATE TABLE IF NOT EXISTS clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    endereco VARCHAR(150) NOT NULL
+);
