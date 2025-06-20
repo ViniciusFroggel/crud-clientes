@@ -73,8 +73,6 @@ Desenvolvido com foco em:
 
 - Instale o [XAMPP](https://www.apachefriends.org/pt_br/index.html) (ou similar)
 
-![image](https://github.com/user-attachments/assets/923d543a-643e-4c9e-85a6-c281f2ed3128)
-
 
 ---
 
@@ -164,6 +162,9 @@ http://localhost/crud_clientes_hardness/views/index.php
 ## 🔍 Prints do Projeto
 
 ![image](https://github.com/user-attachments/assets/ff5b7b36-0d80-4216-a74b-07f3398a2a3a)
+
+![image](https://github.com/user-attachments/assets/920989b6-7dc6-47fc-adf1-f039c4795349)
+
 
 
 ---
