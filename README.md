@@ -168,6 +168,7 @@ http://localhost/crud_clientes_hardness/views/index.php
 
 Desenvolvido por **Vinicius André Froggel de Miranda**  
 🚀 LinkedIn: https://www.linkedin.com/in/viniciusfroggel/ 
+
 📧 Email: Viniciusmiranda2003@Outlook.com
 
 ---
