@@ -34,17 +34,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <form method="POST">
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
+            <input type="text" name="nome" id="nome" placeholder="Digite o nome" required>
 
             <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" placeholder="(XX) 9XXXX-XXXX" required>
+            <input type="text" name="telefone" id="telefone" placeholder="(XX) XXXXX-XXXX" required>
 
             <label for="endereco">Endereço:</label>
-            <input type="text" id="endereco" name="endereco" placeholder="Digite o endereço" required>
+            <input type="text" name="endereco" id="endereco" placeholder="Digite o endereço" required>
 
-              <div class="botoes-form">
-                <button type="submit" class="botao">Salvar</button>
-                <a href="index.php" class="botao">Voltar</a>
+            <div class="botoes-form">
+                <button type="submit" class="botao-salvar">Cadastrar</button>
+                <a href="index.php" class="botao-voltar">Voltar</a>
             </div>
         </form>
     </div>

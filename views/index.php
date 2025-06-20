@@ -1,7 +1,7 @@
 <?php
 include '../includes/conexao.php';
 
-// Buscar todos os clientes cadastrados
+// Buscar clientes
 $sql = "SELECT * FROM clientes ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
@@ -15,7 +15,7 @@ $result = $conn->query($sql);
 </head>
 <body>
     <div class="container">
-        <h1>Bem-vindo ao Sistema de Gerenciamento de Clientes</h1>
+        <h1>Sistema de Gerenciamento de Clientes</h1>
 
         <div class="botoes-dashboard">
             <a href="create.php" class="botao">Cadastrar Cliente</a>
@@ -24,6 +24,10 @@ $result = $conn->query($sql);
 
         <div id="lista-clientes" style="display: none; overflow: hidden; margin-top: 30px;">
             <h2>Lista de Clientes</h2>
+
+            <div class="filtro-pesquisa">
+                <input type="text" id="pesquisa" placeholder="Pesquisar por nome, código, telefone ou endereço...">
+            </div>
 
             <?php if ($result->num_rows > 0): ?>
                 <table>
@@ -45,8 +49,8 @@ $result = $conn->query($sql);
                                 <td><?= htmlspecialchars($cliente['endereco']) ?></td>
                                 <td>
                                     <a href="edit.php?id=<?= $cliente['id'] ?>" class="botao-acao editar">Editar</a>
-                                    <a href="delete.php?id=<?= $cliente['id'] ?>&redirect=index.php" 
-                                       class="botao-acao excluir" 
+                                    <a href="delete.php?id=<?= $cliente['id'] ?>&redirect=index.php"
+                                       class="botao-acao excluir"
                                        onclick="return confirmarExclusao();">
                                        Excluir
                                     </a>

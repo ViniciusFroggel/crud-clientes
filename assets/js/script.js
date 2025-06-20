@@ -7,8 +7,10 @@ function toggleLista() {
 
     if (lista.style.display === 'block' || lista.style.maxHeight) {
         slideUp(lista);
+        localStorage.setItem('listaAberta', 'false');
     } else {
         slideDown(lista);
+        localStorage.setItem('listaAberta', 'true');
     }
 }
 
@@ -49,7 +51,24 @@ function slideUp(element) {
 }
 
 // =========================
-// Confirmação de Exclusão
+// Estado da lista ao carregar
+// =========================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const listaEstaAberta = localStorage.getItem('listaAberta');
+    const lista = document.getElementById('lista-clientes');
+
+    if (lista) {
+        if (listaEstaAberta === 'true') {
+            lista.style.display = 'block';
+        } else {
+            lista.style.display = 'none';
+        }
+    }
+});
+
+// =========================
+// Confirmação ao excluir
 // =========================
 
 function confirmarExclusao() {
@@ -57,65 +76,58 @@ function confirmarExclusao() {
 }
 
 // =========================
-// Validação e Máscara de Telefone
+// Máscara de telefone e validação
 // =========================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     const telefoneInput = document.getElementById('telefone');
 
     if (telefoneInput) {
-        telefoneInput.addEventListener('input', () => {
-            const valorAntigo = telefoneInput.value;
-            const apenasNumeros = valorAntigo.replace(/\D/g, '');
+        telefoneInput.addEventListener('input', function(e) {
+            let valor = this.value.replace(/\D/g, '');
 
-            if (valorAntigo !== apenasNumeros && valorAntigo !== '') {
-                exibirErroTelefone('Somente números são permitidos no telefone!');
-            } else {
-                removerErroTelefone();
+            // Limitar exatamente 11 números
+            if (valor.length > 11) {
+                valor = valor.substring(0, 11);
             }
 
-            aplicarMascaraTelefone(telefoneInput);
+            // Aplicar máscara
+            if (valor.length <= 10) {
+                valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            } else {
+                valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+            }
+
+            this.value = valor.trim();
+
+            // Alerta se tentar digitar letra
+            if (e.inputType === 'insertText' && /\D/.test(e.data)) {
+                alert('Digite apenas números no campo telefone!');
+            }
         });
     }
 });
 
-function aplicarMascaraTelefone(input) {
-    let valor = input.value.replace(/\D/g, '');
-
-    if (valor.length > 11) {
-        valor = valor.substring(0, 11);
-    }
-
-    if (valor.length <= 10) {
-        valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-    } else {
-        valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
-    }
-
-    input.value = valor.trim();
-}
-
 // =========================
-// Mensagem de Erro Telefone
+// Filtro de Pesquisa na Tabela
 // =========================
 
-function exibirErroTelefone(mensagem) {
-    let erro = document.getElementById('erro-telefone');
-    if (!erro) {
-        erro = document.createElement('div');
-        erro.id = 'erro-telefone';
-        erro.style.color = 'red';
-        erro.style.fontSize = '13px';
-        erro.style.marginTop = '4px';
-        const telefoneInput = document.getElementById('telefone');
-        telefoneInput.parentNode.appendChild(erro);
-    }
-    erro.textContent = mensagem;
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('pesquisa');
 
-function removerErroTelefone() {
-    const erro = document.getElementById('erro-telefone');
-    if (erro) {
-        erro.remove();
+    if (input) {
+        input.addEventListener('input', function() {
+            const filtro = input.value.toLowerCase();
+            const linhas = document.querySelectorAll('tbody tr');
+
+            linhas.forEach(linha => {
+                const textoLinha = linha.textContent.toLowerCase();
+                if (textoLinha.includes(filtro)) {
+                    linha.style.display = '';
+                } else {
+                    linha.style.display = 'none';
+                }
+            });
+        });
     }
-}
+});
