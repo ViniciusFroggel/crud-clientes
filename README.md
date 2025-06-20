@@ -17,7 +17,7 @@ Desenvolvido com foco em:
 
 ## 🛠️ Tecnologias Utilizadas
 
-- 🐘 PHP (v8+)
+- 🐘 PHP 
 - 🗄️ MySQL
 - 🌐 HTML5
 - 🎨 CSS3
@@ -160,18 +160,16 @@ http://localhost/crud_clientes_hardness/views/index.php
 
 ## 🔍 Prints do Projeto
 
-> _(Inclua seus prints aqui!)_
+
 
 ---
 
 ## 👨‍💻 Autor
 
 Desenvolvido por **Vinicius André Froggel de Miranda**  
-🚀 LinkedIn:  
-📧 Email:  
+🚀 LinkedIn: https://www.linkedin.com/in/viniciusfroggel/ 
+📧 Email: Viniciusmiranda2003@Outlook.com
 
 ---
 
-## ⚖️ Licença
 
-Este projeto é livre para uso pessoal, acadêmico e de estudo.
