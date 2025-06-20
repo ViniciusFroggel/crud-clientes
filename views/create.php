@@ -2,16 +2,21 @@
 include '../includes/conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $_POST['nome'];
-    $telefone = $_POST['telefone'];
-    $endereco = $_POST['endereco'];
+    $nome = trim($_POST['nome']);
+    $telefone = trim($_POST['telefone']);
+    $endereco = trim($_POST['endereco']);
 
-    $sql = "INSERT INTO clientes (nome, telefone, endereco) VALUES ('$nome', '$telefone', '$endereco')";
+    if ($nome != "" && $telefone != "" && $endereco != "") {
+        $sql = "INSERT INTO clientes (nome, telefone, endereco) VALUES ('$nome', '$telefone', '$endereco')";
 
-    if ($conn->query($sql) === TRUE) {
-        header("Location: index.php");
+        if ($conn->query($sql) === TRUE) {
+            header("Location: index.php");
+            exit;
+        } else {
+            echo "Erro ao cadastrar: " . $conn->error;
+        }
     } else {
-        echo "Erro: " . $conn->error;
+        echo "<script>alert('Preencha todos os campos!');</script>";
     }
 }
 ?>
@@ -24,19 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <h1>Cadastrar Cliente</h1>
-    <form method="POST">
-        <label>Nome:</label><br>
-        <input type="text" name="nome" required><br><br>
+    <div class="container">
+        <h1>Cadastrar Cliente</h1>
+        <form name="formCliente" method="POST" onsubmit="return validarFormulario();">
+            <label>Nome:</label>
+            <input type="text" name="nome" placeholder="Digite o nome" required>
 
-        <label>Telefone:</label><br>
-        <input type="text" name="telefone" required><br><br>
+            <label>Telefone:</label>
+            <input type="text" name="telefone" placeholder="(XX) 9XXXX-XXXX" required>
 
-        <label>Endereço:</label><br>
-        <input type="text" name="endereco" required><br><br>
+            <label>Endereço:</label>
+            <input type="text" name="endereco" placeholder="Digite o endereço" required>
 
-        <input type="submit" value="Cadastrar">
-        <a href="index.php">Voltar</a>
-    </form>
+            <input type="submit" value="Cadastrar">
+            <a href="index.php" class="botao-voltar">Voltar</a>
+        </form>
+    </div>
+
+    <script src="../assets/js/script.js"></script>
 </body>
 </html>

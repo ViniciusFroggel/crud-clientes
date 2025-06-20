@@ -13,30 +13,32 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <h1>Lista de Clientes</h1>
-    <a href="create.php" class="botao">Cadastrar Novo Cliente</a>
-
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>Endereço</th>
-            <th>Ações</th>
-        </tr>
-
-        <?php while($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?= $row['id'] ?></td>
-                <td><?= $row['nome'] ?></td>
-                <td><?= $row['telefone'] ?></td>
-                <td><?= $row['endereco'] ?></td>
-                <td>
-                    <a href="edit.php?id=<?= $row['id'] ?>">Editar</a> |
-                    <a href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
+    <div class="container">
+        <h1>Lista de Clientes</h1>
+        <a href="create.php" class="botao">Cadastrar Novo Cliente</a>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Endereço</th>
+                    <th>Ações</th>
+                </tr>
+                <?php while($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $row['id'] ?></td>
+                    <td><?= $row['nome'] ?></td>
+                    <td><?= $row['telefone'] ?></td>
+                    <td><?= $row['endereco'] ?></td>
+                    <td>
+                        <a href="edit.php?id=<?= $row['id'] ?>">Editar</a> |
+                        <a href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Deseja excluir este cliente?')">Excluir</a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
