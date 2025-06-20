@@ -73,6 +73,9 @@ Desenvolvido com foco em:
 
 - Instale o [XAMPP](https://www.apachefriends.org/pt_br/index.html) (ou similar)
 
+![image](https://github.com/user-attachments/assets/923d543a-643e-4c9e-85a6-c281f2ed3128)
+
+
 ---
 
 ### 2️⃣ Clone o Repositório
