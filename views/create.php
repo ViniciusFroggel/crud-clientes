@@ -6,15 +6,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefone = trim($_POST['telefone']);
     $endereco = trim($_POST['endereco']);
 
-    if ($nome != "" && $telefone != "" && $endereco != "") {
-        $sql = "INSERT INTO clientes (nome, telefone, endereco) VALUES ('$nome', '$telefone', '$endereco')";
+    // Validação do telefone (formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX)
+    $regexTelefone = '/^\(\d{2}\) \d{4,5}-\d{4}$/';
+    if (!preg_match($regexTelefone, $telefone)) {
+        echo "<script>alert('Formato de telefone inválido. Use (XX) XXXXX-XXXX'); window.history.back();</script>";
+        exit;
+    }
 
-        if ($conn->query($sql) === TRUE) {
-            header("Location: index.php");
+    if ($nome != "" && $telefone != "" && $endereco != "") {
+        // Prepared statement para segurança contra SQL Injection
+        $stmt = $conn->prepare("INSERT INTO clientes (nome, telefone, endereco) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $nome, $telefone, $endereco);
+
+        if ($stmt->execute()) {
+            header("Location: ../views/index.php");
             exit;
         } else {
-            echo "Erro ao cadastrar: " . $conn->error;
+            echo "Erro ao cadastrar: " . $stmt->error;
         }
+
+        $stmt->close();
     } else {
         echo "<script>alert('Preencha todos os campos!');</script>";
     }
@@ -44,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="botoes-form">
                 <button type="submit" class="botao-salvar">Cadastrar</button>
-                <a href="index.php" class="botao-voltar">Voltar</a>
+                <a href="../views/index.php" class="botao-voltar">Voltar</a>
             </div>
         </form>
     </div>
