@@ -1,9 +1,7 @@
 
-# 🚀 CRUD de Clientes - Hardness Sistemas
+# 🚀 CRUD de Clientes 
 
-## 📋 Descrição
-
-Este é um projeto desenvolvido como parte do teste prático para o processo seletivo da **Hardness Sistemas**, na vaga de **Estágio em Desenvolvimento**.  
+## 📋 Descrição 
 O sistema permite realizar operações de **Cadastro, Listagem, Edição, Pesquisa e Exclusão** de clientes.
 
 Desenvolvido com foco em:
