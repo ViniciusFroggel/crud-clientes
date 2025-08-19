@@ -43,7 +43,7 @@ Desenvolvido com foco em:
 ## 🗂️ Estrutura de Pastas
 
 ```
-/crud_clientes_hardness
+/crud_clientes
 │
 ├── assets
 │   ├── css
