@@ -8,7 +8,7 @@ $password = "izjSqf3ben7FTGwq4PNOpvUJPzB92GuP";
 
 try {
     // Cria a conexão PDO
-    $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
+   $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
 
     // Configura o PDO para lançar exceções em caso de erro
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
