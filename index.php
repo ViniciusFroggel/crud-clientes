@@ -7,7 +7,7 @@ $result = $conn->query("SELECT * FROM clientes ORDER BY id DESC");
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - Sistema de Clientes</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <!-- Header -->
@@ -54,7 +54,7 @@ $result = $conn->query("SELECT * FROM clientes ORDER BY id DESC");
                         <td data-label="Endereço"><?= htmlspecialchars($cli['endereco']) ?></td>
                         <td data-label="Ações">
                             <a href="edit.php?id=<?= $cli['id'] ?>" class="botao-acao editar">Editar</a>
-                            <a href="../views/delete.php?id=<?= $cli['id'] ?>" class="botao-acao excluir" onclick="return confirmarExclusao()">Excluir</a>
+                            <a href="delete.php?id=<?= $cli['id'] ?>" class="botao-acao excluir" onclick="return confirmarExclusao()">Excluir</a>
                         </td>
                     </tr>
                     <?php endwhile; ?>
