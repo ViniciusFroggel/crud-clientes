@@ -1,5 +1,5 @@
 <?php
-include '../includes/conexao.php';
+include 'includes/conexao.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome     = trim($_POST['nome']);
     $telefone = trim($_POST['telefone']);
@@ -69,6 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>&copy; 2025 - Sistema de Clientes | Todos os direitos reservados</p>
     </footer>
 
-    <script src="../assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

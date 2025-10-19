@@ -1,5 +1,5 @@
 <?php
-include '../includes/conexao.php';
+include 'includes/conexao.php';
 $result = $conn->query("SELECT * FROM clientes ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
@@ -71,6 +71,6 @@ $result = $conn->query("SELECT * FROM clientes ORDER BY id DESC");
         <p>&copy; 2025 - Sistema de Clientes | Todos os direitos reservados</p>
     </footer>
 
-    <script src="../assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
