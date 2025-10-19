@@ -12,6 +12,9 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 /* ===== Header ===== */
@@ -59,6 +62,7 @@ header nav a:hover {
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    flex: 1;
 }
 
 /* ===== Títulos ===== */
