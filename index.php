@@ -16,8 +16,8 @@ $clientes = $stmt->fetchAll();
     <header>
         <div class="logo">Sistema de Clientes</div>
         <nav>
-            <a href="index.php">Home</a>
-            <a href="create.php">Cadastrar</a>
+            <a href="index.php" class="botao">Home</a>
+            <a href="create.php" class="botao">Cadastrar</a>
         </nav>
     </header>
 
@@ -56,7 +56,7 @@ $clientes = $stmt->fetchAll();
                         <td data-label="Endereço"><?= htmlspecialchars($cli['endereco']) ?></td>
                         <td data-label="Ações">
                             <a href="edit.php?id=<?= $cli['id'] ?>" class="botao-acao editar">Editar</a>
-                            <a href="views/delete.php?id=<?= $cli['id'] ?>" class="botao-acao excluir" onclick="return confirmarExclusao()">Excluir</a>
+                            <a href="delete.php?id=<?= $cli['id'] ?>" class="botao-acao excluir" onclick="return confirmarExclusao()">Excluir</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
