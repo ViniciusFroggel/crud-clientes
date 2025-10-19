@@ -1,8 +1,9 @@
 # Usa a imagem oficial do PHP com Apache
 FROM php:8.2-apache
 
-# Instala extensões necessárias para MySQL
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Instala PDO e PostgreSQL
+RUN apt-get update && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Copia todos os arquivos do projeto para o servidor
 COPY . /var/www/html/
@@ -10,7 +11,7 @@ COPY . /var/www/html/
 # Ajusta permissões (importante para evitar erro 403)
 RUN chmod -R 755 /var/www/html
 
-# Expõe a porta padrão do Apache
+# Expondo a porta padrão do Apache
 EXPOSE 80
 
 # Inicia o servidor Apache
