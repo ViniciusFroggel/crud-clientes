@@ -1,23 +1,26 @@
 <?php
-include '../includes/conexao.php';
+include 'conexao.php'; // Conexão PDO com PostgreSQL
 
 // Pega o ID do cliente e a página de redirecionamento
 $id = $_GET['id'] ?? '';
-$redirect = $_GET['redirect'] ?? 'index.php'; // Se não enviar, volta para index.php por padrão
+$redirect = $_GET['redirect'] ?? 'index.php'; // padrão: index.php
 
 if (!empty($id)) {
-    // Query para deletar
-    $sql = "DELETE FROM clientes WHERE id = $id";
+    try {
+        // Query para deletar usando prepared statement
+        $stmt = $conn->prepare("DELETE FROM clientes WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
 
-    if ($conn->query($sql) === TRUE) {
-        // Redireciona de volta para a página de onde veio
+        // Redireciona de volta
         header("Location: $redirect");
         exit;
-    } else {
-        echo "Erro ao excluir cliente: " . $conn->error;
+
+    } catch (PDOException $e) {
+        echo "Erro ao excluir cliente: " . $e->getMessage();
     }
 } else {
-    // Se não tiver ID, apenas volta
+    // Se não tiver ID, volta para a página
     header("Location: $redirect");
     exit;
 }

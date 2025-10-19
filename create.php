@@ -1,5 +1,6 @@
 <?php
-include 'includes/conexao.php';
+include 'conexao.php'; // conexão PDO com PostgreSQL
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome     = trim($_POST['nome']);
     $telefone = trim($_POST['telefone']);
@@ -13,15 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($nome && $telefone && $endereco) {
-        $stmt = $conn->prepare("INSERT INTO clientes (nome, telefone, endereco) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $nome, $telefone, $endereco);
-        if ($stmt->execute()) {
+        try {
+            $stmt = $conn->prepare("INSERT INTO clientes (nome, telefone, endereco) VALUES (:nome, :telefone, :endereco)");
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':telefone', $telefone);
+            $stmt->bindParam(':endereco', $endereco);
+            $stmt->execute();
+
             header("Location: index.php");
             exit;
-        } else {
-            echo "Erro ao cadastrar: " . $stmt->error;
+
+        } catch (PDOException $e) {
+            echo "Erro ao cadastrar: " . $e->getMessage();
         }
-        $stmt->close();
     } else {
         echo "<script>alert('Preencha todos os campos!');</script>";
     }
@@ -32,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Cliente</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <!-- Header -->

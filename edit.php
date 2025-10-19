@@ -1,14 +1,18 @@
 <?php
-include 'includes/conexao.php';
-$id = intval($_GET['id']);
+include 'conexao.php'; // conexão PDO com PostgreSQL
+
+$id = intval($_GET['id'] ?? 0);
+
+if ($id <= 0) {
+    header("Location: index.php");
+    exit;
+}
 
 // Busca o cliente
-$stmt = $conn->prepare("SELECT * FROM clientes WHERE id = ?");
-$stmt->bind_param("i", $id);
+$stmt = $conn->prepare("SELECT * FROM clientes WHERE id = :id");
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
-$result = $stmt->get_result();
-$cliente = $result->fetch_assoc();
-$stmt->close();
+$cliente = $stmt->fetch();
 
 // Atualização
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,15 +28,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($nome && $telefone && $endereco) {
-        $stmt = $conn->prepare("UPDATE clientes SET nome=?, telefone=?, endereco=? WHERE id=?");
-        $stmt->bind_param("sssi", $nome, $telefone, $endereco, $id);
-        if ($stmt->execute()) {
+        try {
+            $stmt = $conn->prepare("UPDATE clientes SET nome = :nome, telefone = :telefone, endereco = :endereco WHERE id = :id");
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':telefone', $telefone);
+            $stmt->bindParam(':endereco', $endereco);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
             header("Location: index.php");
             exit;
-        } else {
-            echo "Erro ao atualizar: " . $stmt->error;
+        } catch (PDOException $e) {
+            echo "Erro ao atualizar: " . $e->getMessage();
         }
-        $stmt->close();
     } else {
         echo "<script>alert('Preencha todos os campos!');</script>";
     }
@@ -43,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Editar Cliente</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <!-- Header -->
