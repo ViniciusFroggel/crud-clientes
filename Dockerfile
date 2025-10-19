@@ -8,7 +8,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 COPY . /var/www/html/
 
 # Ajusta permissões (importante para evitar erro 403)
-RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
 
 # Expõe a porta padrão do Apache
 EXPOSE 80
